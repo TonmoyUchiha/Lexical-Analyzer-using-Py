@@ -1,0 +1,35 @@
+import re
+
+# Define token categories (could only think of only 3)
+KEYWORDS = ["int", "float", "if", "else", "while", "return", "for"]
+OPERATORS = ['+', '-', '*', '/', '=', '>', '<']
+DELIMITERS = [';', '(', ')', '{', '}']
+
+#Classification of tokens 
+def cls_tkn(token):
+    if token in KEYWORDS:
+        return "Keyword"
+    elif token in OPERATORS:
+        return "Operator"
+    elif token in DELIMITERS:
+        return "Delimiter"
+    elif re.fullmatch(r'\d+', token):  # Matches numbers
+        return "Number"
+    elif re.fullmatch(r'[a-zA-Z_]\w*', token):  # Matches identifiers
+        return "Identifier"
+    else:
+        return "Unknown"
+
+def lex_an(source_code):
+    print("\nLexical Analysis:")
+    tkn_ptrn = r"[a-zA-Z_]\w*|\d+|[+\-*/=<>]|[;(){}]"  # Token pattern using REGEX
+    tokens = re.findall(tkn_ptrn, source_code)
+
+    # Process each token separately
+    for token in tokens:
+        token_type = cls_tkn(token)
+        print(f"{token}: {token_type}")
+
+# Main Program
+source_code = input("Enter the source code: ")
+lex_an(source_code)
